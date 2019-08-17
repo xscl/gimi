@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @Slf4j
 @ComponentScan("com.selfspring.gimi")
 @EnableScheduling
-public class TimmirApplication implements CommandLineRunner {
+public class GimiApplication implements CommandLineRunner {
 	@Resource
 	DataSource dataSource;
 
@@ -33,7 +33,7 @@ public class TimmirApplication implements CommandLineRunner {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(TimmirApplication.class, args);
+		SpringApplication.run(GimiApplication.class, args);
 	}
 
 	@Override

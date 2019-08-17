@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Created by ckyang on 2019/6/29.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = TimmirApplication.class)
+@SpringBootTest(classes = GimiApplication.class)
 @EnableAutoConfiguration
 public class ApplicationRedisTest {
 
