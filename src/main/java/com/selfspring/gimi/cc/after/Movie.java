@@ -19,14 +19,14 @@ public class Movie {
      * 影片的名称
      */
     private String title;
-    private Integer type;
+    private Price price;
 
     public Movie() {
     }
 
     public Movie(String title, Integer type) {
         this.title = title;
-        this.setType(type);
+        this.setPrice(type);
     }
 
     public String getTitle() {
@@ -40,12 +40,24 @@ public class Movie {
     /**
      * 影片的类型
      */
-    public Integer getType() {
-        return type;
+    public Price getPrice() {
+        return price;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setPrice(Integer type) {
+        switch (type) {
+            case CHILDRENS:
+                price = new ChildrensPrice();
+                break;
+            case NEW_RELEASE:
+                price = new ChildrensPrice();
+                break;
+            case REGULAR:
+                price = new ChildrensPrice();
+                break;
+            default:
+                throw new IllegalArgumentException("不支持的类型") ;
+        }
     }
 
     public String getMovieTypeName(int type){
@@ -62,40 +74,11 @@ public class Movie {
         return name;
     }
 
-    double getCharge(int daysRented) {
-        double result = 0.0;
-        switch (getType()) {
-            case CHILDRENS:
-
-                result += 1.5;
-                if (daysRented > 3) {
-                    result += (daysRented - 3) * 1.5;
-                }
-                break;
-            case NEW_RELEASE:
-
-                result += daysRented * 3;
-                break;
-            case REGULAR:
-
-                result += 2;
-                if (daysRented > 2) {
-                    result += (daysRented - 2) * 1.5;
-                }
-                break;
-
-            default:
-                break;
-        }
-        return result;
+    public double getCharge(int daysRented) {
+        return price.getCharge(daysRented);
     }
 
     public int getFrequentRenterPoints(int daysRented) {
-        int result = 1;
-
-        if (getType() == NEW_RELEASE && daysRented > 1) {
-            result++;
-        }
-        return result;
+        return price.getFrequentRenterPoints(daysRented);
     }
 }
