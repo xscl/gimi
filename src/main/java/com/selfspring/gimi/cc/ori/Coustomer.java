@@ -14,14 +14,14 @@ public class Coustomer {
 
     private String _name;
 
-    private Vector rentals = new Vector();
+    private Vector _rentals = new Vector();
 
     public Coustomer(String _name) {
         this._name = _name;
     }
 
     public void addRental(Rental rental) {
-        rentals.addElement(rental);
+        _rentals.addElement(rental);
     }
 
     public String getName() {
@@ -29,57 +29,57 @@ public class Coustomer {
     }
 
     public String statement() {
-        //总费用
-        double totalAmount = 0;
-        // 积分数
-        int integralNum = 0;
-        Enumeration erts = rentals.elements();
-        String result = "租用的顾客名字为： " + getName() + "\n";
-        result += "=========================================\n";
-        while (erts.hasMoreElements()) {
-            // 每个影片的费用
-            double thisAmount = 0;
-            Rental rental = (Rental) erts.nextElement();
 
-            int daysRented = rental.getDaysRented();
-            Integer type = rental.getMovie().getType();
-            switch (type) {
-                case Movie.REGULAR:
-                    thisAmount += 2;
-                    if (daysRented > 2) {
-                        thisAmount += (daysRented - 2) * 1.5;
+        double totalAmount = 0;
+        int frequentRenterPoints = 0;
+        Enumeration<Rental> rentals = _rentals.elements();
+
+        String result = "Rental Record for " + getName() + "\n";
+        while (rentals.hasMoreElements()) {
+
+            double thisAmount = 0;
+            Rental each = (Rental) rentals.nextElement();
+
+            switch (each.getMovie().getType()) {
+                case Movie.CHILDRENS:
+
+                    thisAmount += 1.5;
+                    if (each.getDaysRented() > 3) {
+                        thisAmount += (each.getDaysRented() - 3) * 1.5;
                     }
                     break;
                 case Movie.NEW_RELEASE:
-                    thisAmount += daysRented * 3;
-                    break;
 
-                case Movie.CHILDRENS:
-                    thisAmount += 1.5;
-                    if (daysRented > 3) {
-                        thisAmount += (daysRented - 3) * 1.5;
+                    thisAmount += each.getDaysRented() * 3;
+                    break;
+                case Movie.REGULAR:
+
+                    thisAmount += 2;
+                    if (each.getDaysRented() > 2) {
+                        thisAmount += (each.getDaysRented() - 2) * 1.5;
                     }
                     break;
+
+                default:
+                    break;
             }
 
-            integralNum++;
-            // 如果是租用新片则累积多加1积分
-            if (type == Movie.NEW_RELEASE && daysRented > 1) {
-                integralNum++;
-            }
+            frequentRenterPoints++;
 
-            //打印租用影片详情
-            result += "影片名称：" + rental.getMovie().getTitle() + "\t 影片类型：" + rental.getMovie().getMovieTypeName(type)
-                    + "\n";
-            result += "租期：" + daysRented + "天\t 费用：" + thisAmount + "元\n";
-            result += "----------------------------------------------------\n";
+            if (each.getMovie().getType() == Movie.NEW_RELEASE && each.getDaysRented() > 1) frequentRenterPoints++;
+
+            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAmount) + "\n";
             totalAmount += thisAmount;
+
         }
 
-        result += ">>>>>>>>>>>>>>>>>>总费用：" + totalAmount + "元<<<<<<<<<<<<<<<<<<<< \n";
-        result += ">>>>>>>>>>>>>>>>>>本次积分：" + integralNum + "<<<<<<<<<<<<<<<<<<<<";
+        result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+
+        result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points ";
+
         return result;
     }
+
 
 }
 
